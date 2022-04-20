@@ -4,12 +4,21 @@ Date: Wed, 20 Apr 2022 00:16:19 +0200
 Subject: [PATCH] implement unix pid maps in winedbg
 
 ---
+ .gitignore                  |   1 +
  programs/winedbg/dbg.y      |   3 +-
  programs/winedbg/debug.l    |   1 +
  programs/winedbg/debugger.h |   1 +
  programs/winedbg/info.c     | 167 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 171 insertions(+), 1 deletion(-)
+ 5 files changed, 172 insertions(+), 1 deletion(-)
+ create mode 100644 .gitignore
 
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+index 00000000000..fd5106ff27b
+--- /dev/null
++++ b/.gitignore
+@@ -0,0 +1 @@
++.DS_STORE
 diff --git a/programs/winedbg/dbg.y b/programs/winedbg/dbg.y
 index ad21e3b81c5..b1199c18f03 100644
 --- a/programs/winedbg/dbg.y
@@ -20,7 +29,7 @@ index ad21e3b81c5..b1199c18f03 100644
  %token tCLASS tMAPS tSTACK tSEGMENTS tSYMBOL tREGS tALLREGS tWND tLOCAL tEXCEPTION
 -%token tPROCESS tTHREAD tEOL tEOF
 +%token tPROCESS tPROCESSMAP tTHREAD tEOL tEOF
- %token tFRAME tSHARE tMODULE tCOND tDISPLAY tUNDISPLAY tDISASSEMBLE tSYSTEM
+ %token tFRAME tSHARE tMODULE tCOND tDISPLAY tUNDISPLAY tDISASSEMBLE
  %token tSTEPI tNEXTI tFINISH tSHOW tDIR tWHATIS tSOURCE
  %token <string> tPATH tIDENTIFIER tSTRING tINTVAR
 @@ -284,6 +284,7 @@ info_command:
@@ -263,3 +272,4 @@ index bb933aeb455..2b2382c6c11 100644
      BOOL   ret = FALSE;
 -- 
 2.32.0 (Apple Git-132)
+
